@@ -1,0 +1,9 @@
+# k8s/postgres.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configuration
+data:
+  POSTGRES_DB: "django-db"
+  POSTGRES_USER: "postgres-user"
