@@ -1,3 +1,5 @@
+use crate::model::quiz::question::Question;
+use crate::model::quiz::quiz::Quiz;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -10,4 +12,10 @@ pub struct APIReponse<T: Serialize = ()> {
 #[derive(Serialize)]
 pub struct CreateResponse {
     pub quiz_id: String,
+}
+
+#[derive(Serialize)]
+pub struct QuizWithQuestionsResponse {
+    pub quiz: Quiz,
+    pub questions: Vec<Question>,
 }

@@ -1,14 +1,16 @@
 # Local dev database
 version: '3.8'
 services:
-  redis:
-    image: redis:6.2-alpine
+  db:
+    image: postgres:14.1-alpine
     restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+      - '5432:5432'
     volumes:
-      - cache:/data
+      - db:/var/lib/postgresql/data
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
     container_name: zookeeper
@@ -34,5 +36,5 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 volumes:
-  redis:
+  db:
     driver: local

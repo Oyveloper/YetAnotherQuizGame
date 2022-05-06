@@ -1,45 +1,30 @@
-use crate::model::quiz::question::Question;
-use serde::Serialize;
+use crate::model::api::request_types::QuizInput;
+use crate::schema::quizs;
+use diesel::{Insertable, Queryable};
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize, Queryable, Insertable, Identifiable)]
+#[table_name = "quizs"]
 pub struct Quiz {
-    id: i32,
+    id: String,
     name: String,
     description: String,
-    questions: Vec<Question>,
+    // questions: Vec<Question>,
 }
 
 impl Quiz {
-    pub fn new(id: i32, name: String, description: String) -> Quiz {
+    pub fn new(name: &str, description: &str) -> Quiz {
+        let id = Uuid::new_v4().to_string();
         Quiz {
             id: id,
-            name: name,
-            description: description,
-            questions: vec![],
+            name: name.to_owned(),
+            description: description.to_owned(),
+            // questions: vec![],
         }
     }
 
-    pub fn get_id(&self) -> i32 {
-        self.id
-    }
-
-    pub fn get_name(&self) -> &String {
-        &self.name
-    }
-
-    pub fn get_description(&self) -> &String {
-        &self.description
-    }
-
-    pub fn get_questions(&self) -> &Vec<Question> {
-        &self.questions
-    }
-
-    pub fn add_question(&mut self, question: Question) {
-        self.questions.push(question);
-    }
-
-    pub fn add_questions(&mut self, questions: Vec<Question>) {
-        self.questions.extend(questions);
+    pub fn from(input: QuizInput) -> Self {
+        Quiz::new(&input.name, &input.description)
     }
 }

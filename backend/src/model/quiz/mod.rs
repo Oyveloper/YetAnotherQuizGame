@@ -1,2 +1,2 @@
 pub mod question;
-pub struct Quiz;
+pub mod quiz;
